@@ -46,7 +46,24 @@ void command_parse(char *buffer)
 
 	argv[argc] = NULL;
 
-	for (int i = 0; i < argc; i++) {
-		printf("%s ", argv[argc]);
+	if (command_check_builtin(argv[0])) {
+		return;
 	}
+
+	//if (command_check_path(argv[argc])) {
+	//	return;
+	//}
+
+	printf("psh: comand not found: %s", argv[0]);
+}
+
+/**
+ * @brief	This routine checks if a command is built-in.
+ * 
+ * @return	1 if the command is built-in, 0 otherwise.
+ */
+int command_check_builtin(char *argv)
+{
+	(void)argv;
+	return 0;
 }

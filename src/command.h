@@ -22,4 +22,11 @@
  */
 void command_parse(char *buffer);
 
+/**
+ * @brief	This routine checks if a command is built-in.
+ * 
+ * @return	1 if the command is built-in, 0 otherwise.
+ */
+int command_check_builtin(char *argv);
+
 #endif // __COMMAND_H_
