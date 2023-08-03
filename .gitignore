@@ -1,0 +1,6 @@
+.vscode/
+docs/
+
+.DS_Store
+*.o
+psh
