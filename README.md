@@ -9,4 +9,4 @@ to discuss what you would like to change
 
 ## License
 
-Sailfish is licensed under the MIT license, which you can find [here](LICENSE).
+Pretty SHell is licensed under the MIT license, which you can find [here](LICENSE).
