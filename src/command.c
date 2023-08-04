@@ -13,7 +13,9 @@
 #include <string.h>
 #include <errno.h>
 
+#include "hashtable.h"
 #include "command.h"
+#include "builtin.h"
 
 /**
  * @brief	This routine parses user input and handles it.
@@ -46,11 +48,11 @@ void command_parse(char *buffer)
 
 	argv[argc] = NULL;
 
-	if (command_check_builtin(argv[0])) {
+	if (command_check_builtin(argv)) {
 		return;
 	}
 
-	//if (command_check_path(argv[argc])) {
+	//if (command_check_path(argv)) {
 	//	return;
 	//}
 
@@ -62,7 +64,7 @@ void command_parse(char *buffer)
  * 
  * @return	1 if the command is built-in, 0 otherwise.
  */
-int command_check_builtin(char *argv)
+int command_check_builtin(char **argv)
 {
 	(void)argv;
 	return 0;
