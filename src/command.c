@@ -75,7 +75,7 @@ int command_check_builtin(const char **argv)
 	// @todo: make argv[0] lowercase
 	builtin_func func = hashtable_search(g_builtin_hashtable, argv[0]);
 	if (func == NULL) {
-		return 0;
+		return -1;
 	}
 
 	return func(argv);

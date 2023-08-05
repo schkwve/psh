@@ -75,7 +75,7 @@ builtin_func hashtable_search(hashtable_t *hashtable, const char *key)
 	
 	int attempt = 1;
 	while (entry != NULL) {
-		if (strncmp(entry->key, key, strlen(key)-1) == 0) {
+		if (strncmp(entry->key, key, strlen(key)) == 0) {
 			return entry->func_ptr;
 		}
 		index = hashtable_get_hash(key, hashtable->size, attempt);

@@ -20,7 +20,7 @@
 /**
  * @brief	This routine parses user input and handles it.
  */
-void command_parse(char *buffer);
+int command_parse(char *buffer);
 
 /**
  * @brief	This routine checks if a command is built-in.
