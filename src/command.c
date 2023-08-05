@@ -49,7 +49,7 @@ int command_parse(char *buffer)
 
 	argv[argc] = NULL;
 
-	int builtin_lookup = command_check_builtin((const char **)argv);
+	int builtin_lookup = command_check_builtin(argc, (const char **)argv);
 	if (builtin_lookup >= 0) {
 		return builtin_lookup;
 	}
@@ -69,7 +69,7 @@ int command_parse(char *buffer)
  * 
  * @return	1 if the command is built-in, 0 otherwise.
  */
-int command_check_builtin(const char **argv)
+int command_check_builtin(int argc, const char **argv)
 {
 	// @todo: make argv[0] lowercase
 	builtin_func func = hashtable_search(g_builtin_hashtable, argv[0]);
@@ -77,5 +77,5 @@ int command_check_builtin(const char **argv)
 		return -1;
 	}
 
-	return func(argv);
+	return func(argc, argv);
 }

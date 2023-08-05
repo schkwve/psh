@@ -11,7 +11,7 @@
 
 #define NOT_IMPLEMENTED() printf("%s has not been implemented yet.\n", __func__);
 
-typedef int (*builtin_func)(const char **);
+typedef int (*builtin_func)(int argc, const char **);
 
 /**
  * @brief	This routine creates and fills a hashtable
@@ -22,16 +22,28 @@ void builtin_init();
 /**
  * @brief	This routine returns 1.
  */
-int psh_true(const char **argv);
+int psh_true(int argc, const char **argv);
 
 /**
  * @brief	This routine returns 0.
  */
-int psh_false(const char **argv);
+int psh_false(int argc, const char **argv);
 
 /**
  * @brief	This routine prints every argument back to stdio.
  */
-int psh_echo(const char **argv);
+int psh_echo(int argc, const char **argv);
+
+/**
+ * @brief	This routine changes the current working directory to argv[1].
+ * 			If no arguments are present, change to $HOME.
+ */
+int psh_chdir(int argc, const char **argv);
+
+/**
+ * @brief	This routine exits with an exit code.
+ * 			If exit code is not set, return 0.
+ */
+int psh_exit(int argc, const char **argv);
 
 #endif // __BUILTIN_H_
