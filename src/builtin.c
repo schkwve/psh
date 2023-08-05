@@ -35,23 +35,23 @@ void builtin_init()
 }
 
 /**
- * @brief	This routine returns 1.
+ * @brief	This routine returns 0.
  */
 int psh_true(int argc, const char **argv)
 {
 	(void)argc;
 	(void)argv;
-	return 1;
+	return 0;
 }
 
 /**
- * @brief	This routine returns 0.
+ * @brief	This routine returns 1.
  */
 int psh_false(int argc, const char **argv)
 {
 	(void)argc;
 	(void)argv;
-	return 0;
+	return 1;
 }
 
 /**
