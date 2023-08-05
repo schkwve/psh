@@ -12,5 +12,26 @@
 #include <stdio.h>
 
 #include "builtin.h"
+#include "hashtable.h"
 
-builtin_cmd_t *builtin_hashtable[BUILTIN_HASHTABLE_SIZE];
+hashtable_t *g_builtin_hashtable;
+
+/**
+ * @brief	This routine creates and fills a hashtable
+ * 			with pointers to built-in command functions.
+ */
+void builtin_init()
+{
+	g_builtin_hashtable = hashtable_create();
+
+	hashtable_insert(g_builtin_hashtable, "echo", echo);
+}
+
+/**
+ * @brief	This routine prints every argument back to stdio.
+ */
+int echo(const char **argv)
+{
+	printf("called %s\n", argv[0]);
+	return 1;
+}

@@ -48,7 +48,7 @@ void command_parse(char *buffer)
 
 	argv[argc] = NULL;
 
-	if (command_check_builtin(argv)) {
+	if (command_check_builtin((const char **)argv)) {
 		return;
 	}
 
@@ -56,7 +56,7 @@ void command_parse(char *buffer)
 	//	return;
 	//}
 
-	printf("psh: comand not found: %s", argv[0]);
+	printf("psh: comand not found: %s\n", argv[0]);
 }
 
 /**
@@ -64,8 +64,13 @@ void command_parse(char *buffer)
  * 
  * @return	1 if the command is built-in, 0 otherwise.
  */
-int command_check_builtin(char **argv)
+int command_check_builtin(const char **argv)
 {
-	(void)argv;
-	return 0;
+	// @todo: make argv[0] lowercase
+	builtin_func func = hashtable_search(g_builtin_hashtable, argv[0]);
+	if (func == NULL) {
+		return 0;
+	}
+
+	return func(argv);
 }

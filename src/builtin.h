@@ -9,14 +9,17 @@
 #ifndef __BUILTIN_H_
 #define __BUILTIN_H_
 
-#define BUILTIN_HASHTABLE_SIZE 1
+typedef int (*builtin_func)(const char **);
 
-typedef struct builtin_cmd {
-	char *cmd;
-	void *func;
-	struct builtin_cmd *next;
-} builtin_cmd_t;
+/**
+ * @brief	This routine creates and fills a hashtable
+ * 			with pointers to built-in command functions.
+ */
+void builtin_init();
 
-extern builtin_cmd_t *builtin_hashtable[BUILTIN_HASHTABLE_SIZE];
+/**
+ * @brief	This routine prints every argument back to stdio.
+ */
+int echo(const char **argv);
 
 #endif // __BUILTIN_H_

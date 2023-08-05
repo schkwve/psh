@@ -11,6 +11,8 @@
 #include <errno.h>
 
 #include "command.h"
+#include "builtin.h"
+#include "hashtable.h"
 
 /**
  * @brief	Main entry point
@@ -28,6 +30,8 @@ int main()
 		exit(1);
 	}
 
+	builtin_init();
+
 	for (;;) {
 		printf("%s ", prompt);
 		int num_bytes = getline(&buffer, &buffer_size, stdin);
@@ -41,6 +45,8 @@ int main()
 		command_parse(buffer);
 	}
 
+	// @todo: move this to atexit() cleanup function
+	hashtable_destroy(g_builtin_hashtable);
 	free(buffer);
 	return 0;
 }
