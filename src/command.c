@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include "hashtable.h"
 #include "command.h"
@@ -54,13 +55,18 @@ int command_parse(char *buffer)
 		return builtin_lookup;
 	}
 
-	// This is just a general idea on $PATH lookup
-	//char *path_lookup = command_check_path(argv);
-	//if (strncmp(path_lookup, "not_found", strlen("not_found")) != 0) {
-	//	return command_execute(argv);
-	//}
+	int stat_loc;
+	pid_t child_pid = fork();
 
-	printf("psh: comand not found: %s\n", argv[0]);
+	if (child_pid == 0) {
+		if (execvp(argv[0], argv) < 0) {
+			fprintf(stderr, "psh: %s: %s\n", strerror(errno), argv[0]);
+			exit(1);
+		}
+	} else {
+		waitpid(child_pid, &stat_loc, WUNTRACED);
+	}
+
 	return -255;
 }
 
