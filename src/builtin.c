@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 
 #include "builtin.h"
 #include "hashtable.h"
@@ -29,6 +30,7 @@ void builtin_init()
 	hashtable_insert(g_builtin_hashtable, "echo", psh_echo);
 	hashtable_insert(g_builtin_hashtable, "exit", psh_exit);
 	hashtable_insert(g_builtin_hashtable, "chdir", psh_chdir);
+	hashtable_insert(g_builtin_hashtable, "cat", psh_cat);
 
 	// aliases
 	hashtable_insert(g_builtin_hashtable, "cd", psh_chdir);
@@ -52,6 +54,35 @@ int psh_false(int argc, const char **argv)
 	(void)argc;
 	(void)argv;
 	return 1;
+}
+
+/**
+ * @brief	This routines opens and prints the contents of a file from argv[1].
+ */
+int psh_cat(int argc, const char **argv)
+{
+	if (argc < 2) {
+		// @todo: fix this
+		printf("cat: error: file not specified\n");
+		return 1;
+	}
+
+	char file_buffer;
+	FILE *file_ptr = fopen(argv[1], "rb");
+	if (file_ptr == NULL) {
+		perror(strerror(errno));
+		return errno;
+	}
+
+	file_buffer = fgetc(file_ptr);
+	while (file_buffer != EOF) {
+		printf("%c", file_buffer);
+		file_buffer = fgetc(file_ptr);
+	}
+
+	fclose(file_ptr);
+
+	return 0;
 }
 
 /**

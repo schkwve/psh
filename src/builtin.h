@@ -30,6 +30,11 @@ int psh_true(int argc, const char **argv);
 int psh_false(int argc, const char **argv);
 
 /**
+ * @brief	This routines opens and prints the contents of a file from argv[1].
+ */
+int psh_cat(int argc, const char **argv);
+
+/**
  * @brief	This routine prints every argument back to stdio.
  */
 int psh_echo(int argc, const char **argv);
