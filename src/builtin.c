@@ -24,14 +24,35 @@ void builtin_init()
 {
 	g_builtin_hashtable = hashtable_create();
 
-	hashtable_insert(g_builtin_hashtable, "echo", echo);
+	hashtable_insert(g_builtin_hashtable, "true", psh_true);
+	hashtable_insert(g_builtin_hashtable, "false", psh_false);
+	hashtable_insert(g_builtin_hashtable, "echo", psh_echo);
+}
+
+/**
+ * @brief	This routine returns 1.
+ */
+int psh_true(const char **argv)
+{
+	(void)argv;
+	return 1;
+}
+
+/**
+ * @brief	This routine returns 0.
+ */
+int psh_false(const char **argv)
+{
+	(void)argv;
+	return 0;
 }
 
 /**
  * @brief	This routine prints every argument back to stdio.
  */
-int echo(const char **argv)
+int psh_echo(const char **argv)
 {
-	printf("%s\n", argv);
+	NOT_IMPLEMENTED();
+	(void)argv;
 	return 0;
 }
