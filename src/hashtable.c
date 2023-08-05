@@ -15,7 +15,7 @@
 #include "hashtable.h"
 #include "builtin.h"
 
-static hashtable_entry_t HASHTABLE_REMOVED_ENTRY = {NULL, NULL};
+static hashtable_entry_t HASHTABLE_REMOVED_ENTRY = { NULL, NULL };
 
 /**
  * @brief	This routine will allocate enough memory to store
@@ -36,7 +36,8 @@ hashtable_t *hashtable_create()
 /**
  * @brief	This routine inserts an entry into a hashtable.
  */
-void hashtable_insert(hashtable_t *hashtable, const char *key, builtin_func func_ptr)
+void hashtable_insert(hashtable_t *hashtable, const char *key,
+					  builtin_func func_ptr)
 {
 	hashtable_entry_t *entry = hashtable_new_entry(key, func_ptr);
 	int index = hashtable_get_hash(entry->key, hashtable->size, 0);
@@ -105,7 +106,7 @@ builtin_func hashtable_search(hashtable_t *hashtable, const char *key)
 {
 	int index = hashtable_get_hash(key, hashtable->size, 0);
 	hashtable_entry_t *entry = hashtable->entry[index];
-	
+
 	int attempt = 1;
 	while (entry != NULL) {
 		if (entry != &HASHTABLE_REMOVED_ENTRY) {
@@ -125,7 +126,8 @@ builtin_func hashtable_search(hashtable_t *hashtable, const char *key)
  * @brief	This routine calculates the hash of a key
  * 			with basic collision mitigation
  */
-int hashtable_get_hash(const char *key, const size_t hashmap_size, const int att)
+int hashtable_get_hash(const char *key, const size_t hashmap_size,
+					   const int att)
 {
 	const int a = _hashtable_hash(key, 151, hashmap_size);
 	const int b = _hashtable_hash(key, 163, hashmap_size);
@@ -160,7 +162,7 @@ int _hashtable_hash(const char *key, const int a, const size_t size)
 {
 	uint64_t hash = 0;
 	const size_t keylen = strlen(key);
-	
+
 	for (size_t i = 0; i < keylen; i++) {
 		hash += (uint64_t)pow(a, keylen - (i + 1)) * key[i];
 		hash = hash % size;
