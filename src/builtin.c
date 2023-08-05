@@ -59,9 +59,6 @@ int psh_false(int argc, const char **argv)
  */
 int psh_echo(int argc, const char **argv)
 {
-	(void)argc;
-	(void)argv;
-
 	for (int i = 1; i < argc; i++) {
 		printf("%s ", argv[i]);
 	}
