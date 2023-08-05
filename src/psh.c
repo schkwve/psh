@@ -10,22 +10,26 @@
 #include <stdio.h>
 #include <errno.h>
 
+#include "psh.h"
 #include "command.h"
 #include "builtin.h"
 #include "hashtable.h"
+
+static char *_g_buffer;
 
 /**
  * @brief	Main entry point
  */
 int main()
 {
+	atexit(free_everything);
 	// user@hostname$
 	// ??
 	char *prompt = "$";
 
 	size_t buffer_size = 512;
-	char *buffer = (char *)malloc(buffer_size * sizeof(char));
-	if (buffer == NULL) {
+	_g_buffer = (char *)malloc(buffer_size * sizeof(char));
+	if (_g_buffer == NULL) {
 		perror(strerror(errno));
 		exit(1);
 	}
@@ -34,7 +38,7 @@ int main()
 
 	for (;;) {
 		printf("%s ", prompt);
-		int num_bytes = getline(&buffer, &buffer_size, stdin);
+		int num_bytes = getline(&_g_buffer, &buffer_size, stdin);
 		if (num_bytes == -1) {
 			perror(strerror(errno));
 			exit(1);
@@ -42,11 +46,18 @@ int main()
 			continue;
 		}
 
-		command_parse(buffer);
+		command_parse(_g_buffer);
 	}
 
-	// @todo: move this to atexit() cleanup function
-	hashtable_destroy(g_builtin_hashtable);
-	free(buffer);
 	return 0;
+}
+
+/**
+ * @brief	This routine free's all allocated memory
+ * 			and destroys the hashtable.
+ */
+void free_everything()
+{
+	hashtable_destroy(g_builtin_hashtable);
+	free(_g_buffer);
 }
