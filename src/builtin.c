@@ -61,7 +61,12 @@ int psh_echo(int argc, const char **argv)
 {
 	(void)argc;
 	(void)argv;
-	NOT_IMPLEMENTED();
+
+	for (int i = 1; i < argc; i++) {
+		printf("%s ", argv[i]);
+	}
+
+	printf("\n");
 	return 0;
 }
 
