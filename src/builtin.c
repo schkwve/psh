@@ -32,6 +32,6 @@ void builtin_init()
  */
 int echo(const char **argv)
 {
-	printf("called %s\n", argv[0]);
+	printf("%s\n", argv);
 	return 0;
 }

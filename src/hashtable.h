@@ -54,9 +54,9 @@ builtin_func hashtable_search(hashtable_t *hashtable, const char *key);
 int hashtable_get_hash(const char *key, const size_t hashmap_size, const int att);
 
 /**
- * @brief	This routine removes an entry from a hashtable
+ * @brief	This routine removes an entry from a hashtable.
  */
-void hashtable_remove_entry(hashtable_entry_t *entry);
+void hashtable_remove_entry(hashtable_t *hashtable, const char *key);
 
 /**
  * @brief	This routine removes all entries from a hashtable and

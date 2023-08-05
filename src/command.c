@@ -25,16 +25,15 @@
 int command_parse(char *buffer)
 {
 	int buffer_size = PSH_COMMAND_BUFSIZE;
-	char *token;
-	
 	int argc = 0;
+	char *token;
 	char **argv = malloc(PSH_COMMAND_BUFSIZE * sizeof(char *));
 	if (argv == NULL) {
 		perror(strerror(errno));
 		exit(1);
 	}
-	
-	while ((token = strtok_r(buffer, " ", &buffer))) {
+
+	while ((token = strtok_r(buffer, " \t\r\n", &buffer))) {
 		argv[argc] = token;
 		argc++;
 
