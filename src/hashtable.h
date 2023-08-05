@@ -35,7 +35,8 @@ hashtable_t *hashtable_create();
 /**
  * @brief	This routine inserts an entry into a hashtable.
  */
-void hashtable_insert(hashtable_t *hashtable, const char *key, builtin_func func_ptr);
+void hashtable_insert(hashtable_t *hashtable, const char *key,
+					  builtin_func func_ptr);
 
 /**
  * @brief	This routine creates an hashtable entry
@@ -51,7 +52,8 @@ builtin_func hashtable_search(hashtable_t *hashtable, const char *key);
  * @brief	This routine calculates the hash of a key
  * 			with basic collision mitigation
  */
-int hashtable_get_hash(const char *key, const size_t hashmap_size, const int att);
+int hashtable_get_hash(const char *key, const size_t hashmap_size,
+					   const int att);
 
 /**
  * @brief	This routine removes an entry from a hashtable.
@@ -70,6 +72,5 @@ void hashtable_destroy(hashtable_t *hashtable);
  * @return	Hash
  */
 int _hashtable_hash(const char *key, const int a, const size_t size);
-
 
 #endif // __HASHTABLE_H_

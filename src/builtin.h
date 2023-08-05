@@ -9,7 +9,8 @@
 #ifndef __BUILTIN_H_
 #define __BUILTIN_H_
 
-#define NOT_IMPLEMENTED() printf("%s has not been implemented yet.\n", __func__);
+#define NOT_IMPLEMENTED() \
+	printf("%s has not been implemented yet.\n", __func__);
 
 typedef int (*builtin_func)(int argc, const char **);
 

@@ -36,7 +36,7 @@ $(PROGRAM): $(OBJ)
 
 .PHONY: format
 format:
-	@clang-format -i $(CFILES)
+	@clang-format -i $(shell find src -name "*.c" -o -name "*.h")
 
 .PHONY: docs
 docs:
