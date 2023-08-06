@@ -30,7 +30,7 @@ int command_parse(char *buffer)
 	char *token;
 	char **argv = malloc(PSH_COMMAND_BUFSIZE * sizeof(char *));
 	if (argv == NULL) {
-		perror(strerror(errno));
+		perror("psh");
 		exit(1);
 	}
 
@@ -42,7 +42,7 @@ int command_parse(char *buffer)
 			buffer_size += PSH_COMMAND_BUFSIZE;
 			argv = realloc(argv, PSH_COMMAND_BUFSIZE * sizeof(char *));
 			if (argv == NULL) {
-				perror(strerror(errno));
+				perror("psh");
 				exit(1);
 			}
 		}
@@ -51,7 +51,10 @@ int command_parse(char *buffer)
 	argv[argc] = NULL;
 
 	int builtin_lookup = command_check_builtin(argc, (const char **)argv);
-	if (builtin_lookup >= 0) {
+	if (builtin_lookup != 0 && builtin_lookup != -255) {
+		perror(argv[0]);
+		return builtin_lookup;
+	} else if (builtin_lookup == 0) {
 		return builtin_lookup;
 	}
 
@@ -60,7 +63,7 @@ int command_parse(char *buffer)
 
 	if (child_pid == 0) {
 		if (execvp(argv[0], argv) < 0) {
-			fprintf(stderr, "psh: %s: %s\n", strerror(errno), argv[0]);
+			perror("psh");
 			exit(1);
 		}
 	} else {
@@ -80,7 +83,7 @@ int command_check_builtin(int argc, const char **argv)
 	// @todo: make argv[0] lowercase
 	builtin_func func = hashtable_search(g_builtin_hashtable, argv[0]);
 	if (func == NULL) {
-		return -1;
+		return -255;
 	}
 
 	return func(argc, argv);

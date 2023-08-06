@@ -30,7 +30,7 @@ int main()
 	size_t buffer_size = 512;
 	_g_buffer = (char *)malloc(buffer_size * sizeof(char));
 	if (_g_buffer == NULL) {
-		perror(strerror(errno));
+		perror("malloc");
 		exit(1);
 	}
 

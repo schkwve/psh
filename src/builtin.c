@@ -12,6 +12,9 @@
 #include <stdio.h>
 #include <errno.h>
 
+#include <limits.h>
+#include <unistd.h>
+
 #include "builtin.h"
 #include "hashtable.h"
 
@@ -70,7 +73,7 @@ int psh_cat(int argc, const char **argv)
 	char file_buffer;
 	FILE *file_ptr = fopen(argv[1], "rb");
 	if (file_ptr == NULL) {
-		perror(strerror(errno));
+		perror("psh");
 		return errno;
 	}
 
@@ -104,10 +107,15 @@ int psh_echo(int argc, const char **argv)
  */
 int psh_chdir(int argc, const char **argv)
 {
-	(void)argc;
-	(void)argv;
-	NOT_IMPLEMENTED();
-	return 0;
+	if (argc == 1) {
+		char *buffer = malloc(PATH_MAX);
+		getcwd(buffer, PATH_MAX);
+		int ret = chdir(buffer);
+		free(buffer);
+		return ret;
+	}
+
+	return chdir(argv[1]);
 }
 
 /**
