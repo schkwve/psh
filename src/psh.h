@@ -15,7 +15,6 @@
 typedef struct {
 	char cur_user[64];
 	char cwd[1024];
-	char pwd[1024];
 	job_t *jobs[MAX_JOBS];
 } psh_info_t;
 

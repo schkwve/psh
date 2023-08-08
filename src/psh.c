@@ -64,7 +64,7 @@ int main()
 		if (num_bytes == -1) {
 			exit(0);
 		}
-		
+
 		if (_g_buffer[0] == '\n') {
 			continue;
 		}

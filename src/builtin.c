@@ -35,6 +35,8 @@ void builtin_init()
 	hashtable_insert(g_builtin_hashtable, "exit", psh_exit);
 	hashtable_insert(g_builtin_hashtable, "chdir", psh_chdir);
 	hashtable_insert(g_builtin_hashtable, "cat", psh_cat);
+	hashtable_insert(g_builtin_hashtable, "export", psh_export);
+	hashtable_insert(g_builtin_hashtable, "unset", psh_unset);
 
 	// aliases
 	hashtable_insert(g_builtin_hashtable, "cd", psh_chdir);
@@ -92,7 +94,7 @@ int psh_cat(process_t *proc)
  */
 int psh_echo(process_t *proc)
 {
-	if (proc->argc == 1) {
+	if (proc->argc < 2) {
 		char *output = NULL;
 		size_t length = 0;
 		getline(&output, &length, stdin);
@@ -100,6 +102,11 @@ int psh_echo(process_t *proc)
 		return 0;
 	}
 	for (int i = 1; i < proc->argc; i++) {
+		if (strncmp(proc->argv[i], "$", 1) == 0) {
+			memmove(proc->argv[i], proc->argv[i] + 1, strlen(proc->argv[i]));
+			printf("%s ", getenv(proc->argv[i]));
+			continue;
+		}
 		printf("%s ", proc->argv[i]);
 	}
 
@@ -113,15 +120,37 @@ int psh_echo(process_t *proc)
  */
 int psh_chdir(process_t *proc)
 {
-	if (proc->argc == 1) {
-		char *buffer = malloc(PATH_MAX);
-		getcwd(buffer, PATH_MAX);
-		int ret = chdir(buffer);
-		free(buffer);
-		return ret;
+	if (proc->argc < 2) {
+		return chdir(getenv("HOME"));
 	}
 
 	return chdir(proc->argv[1]);
+}
+
+/**
+ * @brief	This routine sets an envirnoment variable
+ */
+int psh_export(process_t *proc)
+{
+	if (proc->argc < 2) {
+		printf("export: not enough arguments\n");
+		return -1;
+	}
+
+	return putenv(proc->argv[1]);
+}
+
+/**
+ * @brief	This routine removes an envirnoment variable
+ */
+int psh_unset(process_t *proc)
+{
+	if (proc->argc < 2) {
+		printf("unset: not enough arguments\n");
+		return -1;
+	}
+
+	return unsetenv(proc->argv[1]);
 }
 
 /**

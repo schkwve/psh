@@ -49,6 +49,16 @@ int psh_echo(process_t *proc);
 int psh_chdir(process_t *proc);
 
 /**
+ * @brief	This routine sets an envirnoment variable
+ */
+int psh_export(process_t *proc);
+
+/**
+ * @brief	This routine removes an envirnoment variable
+ */
+int psh_unset(process_t *proc);
+
+/**
  * @brief	This routine exits with an exit code.
  * 			If exit code is not set, return 0.
  */
