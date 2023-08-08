@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <signal.h>
 #include <errno.h>
 
 #include "psh.h"
@@ -23,6 +24,10 @@ static char *_g_buffer;
 int main()
 {
 	atexit(free_everything);
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+
 	// user@hostname$
 	// ??
 	char *prompt = "$";

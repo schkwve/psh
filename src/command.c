@@ -34,7 +34,7 @@ int command_parse(char *buffer)
 		exit(1);
 	}
 
-	while ((token = strtok_r(buffer, " \t\r\n", &buffer))) {
+	while ((token = strtok_r(buffer, " \t\r\n\a", &buffer))) {
 		argv[argc] = token;
 		argc++;
 
@@ -58,19 +58,21 @@ int command_parse(char *buffer)
 		return builtin_lookup;
 	}
 
-	int stat_loc;
+	int stat_loc = 0;
 	pid_t child_pid = fork();
 
 	if (child_pid == 0) {
+		// reset C-c handler
+		signal(SIGINT, SIG_DFL);
 		if (execvp(argv[0], argv) < 0) {
-			perror("psh");
+			perror(argv[0]);
 			exit(1);
 		}
 	} else {
 		waitpid(child_pid, &stat_loc, WUNTRACED);
 	}
 
-	return -255;
+	return stat_loc;
 }
 
 /**
