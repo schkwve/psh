@@ -56,6 +56,16 @@ int main()
 
 	builtin_init();
 
+	FILE *motd = fopen("/etc/motd", "r");
+	if (motd != NULL) {
+		char c = fgetc(motd);
+		while (c != EOF) {
+			printf("%c", c);
+			c = fgetc(motd);
+		}
+		fclose(motd);
+	}
+
 	for (;;) {
 		printf("%s ", prompt);
 
