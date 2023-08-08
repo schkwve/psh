@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <stdio.h>
 #include <errno.h>
 
@@ -37,6 +38,7 @@ void builtin_init()
 	hashtable_insert(g_builtin_hashtable, "cat", psh_cat);
 	hashtable_insert(g_builtin_hashtable, "export", psh_export);
 	hashtable_insert(g_builtin_hashtable, "unset", psh_unset);
+	hashtable_insert(g_builtin_hashtable, "fg", psh_fg);
 
 	// aliases
 	hashtable_insert(g_builtin_hashtable, "cd", psh_chdir);
@@ -125,6 +127,54 @@ int psh_chdir(process_t *proc)
 	}
 
 	return chdir(proc->argv[1]);
+}
+
+/**
+ * @brief	This routine brings PID to foreground
+ */
+int psh_fg(process_t *proc)
+{
+	if (proc->argc < 2) {
+		printf("fg: not enough arguments\n");
+		return -1;
+	}
+
+	pid_t pid;
+	int job_id = -1;
+
+	if (strncmp(proc->argv[1], "%", 1) == 0) {
+		job_id = atoi(proc->argv[1] + 1);
+		pid = job_id_to_pid(job_id);
+		if (pid < 0) {
+			printf("fg: no such job: %s\n", proc->argv[1]);
+			return -1;
+		}
+	} else {
+		pid = atoi(proc->argv[1]);
+	}
+
+	if (kill(-pid, SIGCONT) < 0) {
+		printf("fg: no such PID: %d\n", pid);
+		return -1;
+	}
+
+	tcsetpgrp(0, pid);
+
+	if (job_id > 0) {
+		job_set_proc_status(job_id, STATUS_CONTINUED);
+		job_print_status(job_id);
+		if (job_wait(job_id) >= 0) {
+			job_remove(job_id);
+		}
+	} else {
+		job_wait_pid(pid);
+	}
+
+	signal(SIGTTOU, SIG_IGN);
+	tcsetpgrp(0, getpid());
+	signal(SIGTTOU, SIG_DFL);
+
+	return 0;
 }
 
 /**

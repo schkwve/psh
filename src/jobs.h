@@ -102,6 +102,11 @@ int job_set_proc_status(int pid, int status);
 int job_pid_to_id(int pid);
 
 /**
+ * @brief	This routine converts job ID to PID
+ */
+int job_id_to_pid(int id);
+
+/**
  * @brief	This routine handles job status
  */
 void job_check_zombie();
@@ -112,6 +117,13 @@ void job_check_zombie();
  * @return	Status.
  */
 int job_wait(int id);
+
+/**
+ * @brief	This routine waits until a job is done and sets appropriate status.
+ * 
+ * @return	Status.
+ */
+int job_wait_pid(int pid);
 
 /**
  * @brief	This routine gets the count of current processes

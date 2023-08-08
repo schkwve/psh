@@ -49,6 +49,11 @@ int psh_echo(process_t *proc);
 int psh_chdir(process_t *proc);
 
 /**
+ * @brief	This routine brings PID to foreground
+ */
+int psh_fg(process_t *proc);
+
+/**
  * @brief	This routine sets an envirnoment variable
  */
 int psh_export(process_t *proc);

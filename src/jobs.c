@@ -235,6 +235,18 @@ int job_pid_to_id(int pid)
 }
 
 /**
+ * @brief	This routine converts job ID to PID
+ */
+int job_id_to_pid(int id)
+{
+	if (id > MAX_JOBS) {
+		return -1;
+	}
+
+	return shell->jobs[id]->pgid;
+}
+
+/**
  * @brief	This routine handles job status
  */
 void job_check_zombie()
@@ -291,6 +303,28 @@ int job_wait(int id)
 			}
 		}
 	} while (wait_count < proc_count);
+
+	return status;
+}
+
+/**
+ * @brief	This routine waits until a job is done and sets appropriate status.
+ * 
+ * @return	Status.
+ */
+int job_wait_pid(int pid)
+{
+	int status = 0;
+
+	waitpid(pid, &status, WUNTRACED);
+	if (WIFEXITED(status)) {
+		job_set_proc_status(pid, STATUS_DONE);
+	} else if (WIFSIGNALED(status)) {
+		job_set_proc_status(pid, STATUS_TERMINATED);
+	} else if (WSTOPSIG(status)) {
+		status = -1;
+		job_set_proc_status(pid, STATUS_SUSPENDED);
+	}
 
 	return status;
 }
