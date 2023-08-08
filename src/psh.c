@@ -63,11 +63,11 @@ int main()
 		// EOF
 		if (num_bytes == -1) {
 			exit(0);
-		} else if (num_bytes == 0) {
+		}
+		
+		if (_g_buffer[0] == '\n') {
 			continue;
 		}
-
-		printf("%d\n", num_bytes);
 
 		// check for C-D / NULL
 		if (_g_buffer == NULL) {
@@ -88,5 +88,6 @@ int main()
 void free_everything()
 {
 	hashtable_destroy(g_builtin_hashtable);
+	free(shell);
 	free(_g_buffer);
 }
