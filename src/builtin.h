@@ -9,10 +9,12 @@
 #ifndef __BUILTIN_H_
 #define __BUILTIN_H_
 
+#include "psh.h"
+
 #define NOT_IMPLEMENTED() \
 	printf("%s has not been implemented yet.\n", __func__);
 
-typedef int (*builtin_func)(int argc, const char **);
+typedef int (*builtin_func)(process_t *);
 
 /**
  * @brief	This routine creates and fills a hashtable
@@ -23,33 +25,33 @@ void builtin_init();
 /**
  * @brief	This routine returns 1.
  */
-int psh_true(int argc, const char **argv);
+int psh_true(process_t *proc);
 
 /**
  * @brief	This routine returns 0.
  */
-int psh_false(int argc, const char **argv);
+int psh_false(process_t *proc);
 
 /**
  * @brief	This routines opens and prints the contents of a file from argv[1].
  */
-int psh_cat(int argc, const char **argv);
+int psh_cat(process_t *proc);
 
 /**
  * @brief	This routine prints every argument back to stdio.
  */
-int psh_echo(int argc, const char **argv);
+int psh_echo(process_t *proc);
 
 /**
  * @brief	This routine changes the current working directory to argv[1].
  * 			If no arguments are present, change to $HOME.
  */
-int psh_chdir(int argc, const char **argv);
+int psh_chdir(process_t *proc);
 
 /**
  * @brief	This routine exits with an exit code.
  * 			If exit code is not set, return 0.
  */
-int psh_exit(int argc, const char **argv);
+int psh_exit(process_t *proc);
 
 #endif // __BUILTIN_H_

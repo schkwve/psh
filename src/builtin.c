@@ -17,6 +17,7 @@
 
 #include "builtin.h"
 #include "hashtable.h"
+#include "psh.h"
 
 hashtable_t *g_builtin_hashtable;
 
@@ -42,36 +43,34 @@ void builtin_init()
 /**
  * @brief	This routine returns 0.
  */
-int psh_true(int argc, const char **argv)
+int psh_true(process_t *proc)
 {
-	(void)argc;
-	(void)argv;
+	(void)proc;
 	return 0;
 }
 
 /**
  * @brief	This routine returns 1.
  */
-int psh_false(int argc, const char **argv)
+int psh_false(process_t *proc)
 {
-	(void)argc;
-	(void)argv;
+	(void)proc;
 	return 1;
 }
 
 /**
  * @brief	This routines opens and prints the contents of a file from argv[1].
  */
-int psh_cat(int argc, const char **argv)
+int psh_cat(process_t *proc)
 {
-	if (argc < 2) {
+	if (proc->argc < 2) {
 		// @todo: fix this
 		printf("cat: error: file not specified\n");
 		return 1;
 	}
 
 	char file_buffer;
-	FILE *file_ptr = fopen(argv[1], "rb");
+	FILE *file_ptr = fopen(proc->argv[1], "rb");
 	if (file_ptr == NULL) {
 		perror("psh");
 		return errno;
@@ -91,10 +90,17 @@ int psh_cat(int argc, const char **argv)
 /**
  * @brief	This routine prints every argument back to stdio.
  */
-int psh_echo(int argc, const char **argv)
+int psh_echo(process_t *proc)
 {
-	for (int i = 1; i < argc; i++) {
-		printf("%s ", argv[i]);
+	if (proc->argc == 1) {
+		char *output = NULL;
+		size_t length = 0;
+		getline(&output, &length, stdin);
+		printf("%s ", output);
+		return 0;
+	}
+	for (int i = 1; i < proc->argc; i++) {
+		printf("%s ", proc->argv[i]);
 	}
 
 	printf("\n");
@@ -105,9 +111,9 @@ int psh_echo(int argc, const char **argv)
  * @brief	This routine changes the current working directory to argv[1].
  * 			If no arguments are present, change to $HOME.
  */
-int psh_chdir(int argc, const char **argv)
+int psh_chdir(process_t *proc)
 {
-	if (argc == 1) {
+	if (proc->argc == 1) {
 		char *buffer = malloc(PATH_MAX);
 		getcwd(buffer, PATH_MAX);
 		int ret = chdir(buffer);
@@ -115,18 +121,18 @@ int psh_chdir(int argc, const char **argv)
 		return ret;
 	}
 
-	return chdir(argv[1]);
+	return chdir(proc->argv[1]);
 }
 
 /**
  * @brief	This routine exits with an exit code.
  * 			If exit code is not set, return 0.
  */
-int psh_exit(int argc, const char **argv)
+int psh_exit(process_t *proc)
 {
 	int code = 0;
-	if (argc > 1) {
-		code = atoi(argv[1]);
+	if (proc->argc > 1) {
+		code = atoi(proc->argv[1]);
 	}
 
 	exit(code);
