@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2023 Jozef Nagy
+# Copyright (c) 2023-2024 Jozef Nagy
 # 
 # Use of this source code is governed by an MIT-style
 # license that can be found in the LICENSE file or at
