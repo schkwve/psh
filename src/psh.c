@@ -18,7 +18,7 @@
 #include "builtin.h"
 #include "hashtable.h"
 
-static char *_g_buffer;
+static char *g_buffer;
 psh_info_t *shell;
 
 /**
@@ -51,8 +51,8 @@ int main(int argc, char **argv)
 	job_t *job;
 
 	size_t buffer_size = 512;
-	_g_buffer = (char *)malloc(buffer_size * sizeof(char));
-	if (_g_buffer == NULL) {
+	g_buffer = (char *)malloc(buffer_size * sizeof(char));
+	if (g_buffer == NULL) {
 		perror("malloc");
 		exit(1);
 	}
@@ -72,22 +72,22 @@ int main(int argc, char **argv)
 	for (;;) {
 		printf("%s ", prompt);
 
-		int num_bytes = getline(&_g_buffer, &buffer_size, stdin);
+		int num_bytes = getline(&g_buffer, &buffer_size, stdin);
 		// EOF
 		if (num_bytes == -1) {
 			exit(0);
 		}
 
-		if (_g_buffer[0] == '\n') {
+		if (g_buffer[0] == '\n') {
 			continue;
 		}
 
 		// check for C-D / NULL
-		if (_g_buffer == NULL) {
+		if (g_buffer == NULL) {
 			exit(0);
 		}
 
-		job = command_parse(_g_buffer);
+		job = command_parse(g_buffer);
 		job_run(job);
 	}
 
@@ -102,5 +102,5 @@ void free_everything(void)
 {
 	hashtable_destroy(g_builtin_hashtable);
 	free(shell);
-	free(_g_buffer);
+	free(g_buffer);
 }

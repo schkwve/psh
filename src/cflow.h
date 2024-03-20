@@ -11,9 +11,6 @@
 
 #include "psh.h"
 
-/**
- * @brief	This routine creates a new process structure.
- */
 process_t *cflow_parse(char *segment);
 
 #endif // __CFLOW_H_

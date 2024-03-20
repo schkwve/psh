@@ -9,10 +9,6 @@
 #ifndef __HELPER_H_
 #define __HELPER_H_
 
-/**
- * @brief	This routine trims excessive whitespace
- * 			"  Hello   World" -> "Hello World"
- */
 char *strtrim(char *str);
 
 #endif // __HELPER_H_

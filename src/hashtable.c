@@ -18,6 +18,24 @@
 static hashtable_entry_t HASHTABLE_REMOVED_ENTRY = { NULL, NULL };
 
 /**
+ * @brief	This routine hashes a key.
+ * 
+ * @return	Hash
+ */
+static int hash(const char *key, const int a, const size_t size)
+{
+	uint64_t hash = 0;
+	const size_t keylen = strlen(key);
+
+	for (size_t i = 0; i < keylen; i++) {
+		hash += (uint64_t)pow(a, keylen - (i + 1)) * key[i];
+		hash = hash % size;
+	}
+
+	return (int)hash;
+}
+
+/**
  * @brief	This routine will allocate enough memory to store
  * 			the hashtable and initialize it with NULL values.
  */
@@ -32,6 +50,25 @@ hashtable_t *hashtable_create(void)
 
 	return hashtable;
 }
+
+/**
+ * @brief	This routine removes all entries from a hashtable and
+ * 			free()'s it.
+ */
+void hashtable_destroy(hashtable_t *hashtable)
+{
+	for (size_t i = 0; i < hashtable->size; i++) {
+		hashtable_entry_t *entry = hashtable->entry[i];
+		if (entry != NULL) {
+			free(entry->key);
+			free(entry);
+		}
+	}
+
+	free(hashtable->entry);
+	free(hashtable);
+}
+
 
 /**
  * @brief	This routine inserts an entry into a hashtable.
@@ -129,44 +166,8 @@ builtin_func hashtable_search(hashtable_t *hashtable, const char *key)
 int hashtable_get_hash(const char *key, const size_t hashmap_size,
 					   const int att)
 {
-	const int a = _hashtable_hash(key, 151, hashmap_size);
-	const int b = _hashtable_hash(key, 163, hashmap_size);
+	const int a = hash(key, 151, hashmap_size);
+	const int b = hash(key, 163, hashmap_size);
 
 	return (a + (att * (b + 1))) % hashmap_size;
-}
-
-/**
- * @brief	This routine removes all entries from a hashtable and
- * 			free()'s it.
- */
-void hashtable_destroy(hashtable_t *hashtable)
-{
-	for (size_t i = 0; i < hashtable->size; i++) {
-		hashtable_entry_t *entry = hashtable->entry[i];
-		if (entry != NULL) {
-			free(entry->key);
-			free(entry);
-		}
-	}
-
-	free(hashtable->entry);
-	free(hashtable);
-}
-
-/**
- * @brief	This routine hashes a key.
- * 
- * @return	Hash
- */
-int _hashtable_hash(const char *key, const int a, const size_t size)
-{
-	uint64_t hash = 0;
-	const size_t keylen = strlen(key);
-
-	for (size_t i = 0; i < keylen; i++) {
-		hash += (uint64_t)pow(a, keylen - (i + 1)) * key[i];
-		hash = hash % size;
-	}
-
-	return (int)hash;
 }
