@@ -25,7 +25,7 @@ const char *g_proc_status[] = { "running", "done", "suspended", "continued",
  * 
  * @return	Job ID if a free one was found. Otherwise, -1.
  */
-int job_get_next_id()
+int job_get_next_id(void)
 {
 	for (int i = 0; i <= MAX_JOBS; i++) {
 		if (shell->jobs[i] == NULL) {
@@ -249,7 +249,7 @@ int job_id_to_pid(int id)
 /**
  * @brief	This routine handles job status
  */
-void job_check_zombie()
+void job_check_zombie(void)
 {
 	int status;
 	int pid;

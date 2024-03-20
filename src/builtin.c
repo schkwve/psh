@@ -26,7 +26,7 @@ hashtable_t *g_builtin_hashtable;
  * @brief	This routine creates and fills a hashtable
  * 			with pointers to built-in command functions.
  */
-void builtin_init()
+void builtin_init(void)
 {
 	g_builtin_hashtable = hashtable_create();
 

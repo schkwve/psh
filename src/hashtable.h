@@ -30,7 +30,7 @@ extern hashtable_t *g_builtin_hashtable;
  * @brief	This routine will allocate enough memory to store
  * 			the hashtable and initialize it with NULL values.
  */
-hashtable_t *hashtable_create();
+hashtable_t *hashtable_create(void);
 
 /**
  * @brief	This routine inserts an entry into a hashtable.

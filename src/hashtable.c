@@ -21,7 +21,7 @@ static hashtable_entry_t HASHTABLE_REMOVED_ENTRY = { NULL, NULL };
  * @brief	This routine will allocate enough memory to store
  * 			the hashtable and initialize it with NULL values.
  */
-hashtable_t *hashtable_create()
+hashtable_t *hashtable_create(void)
 {
 	hashtable_t *hashtable = malloc(sizeof(*hashtable));
 

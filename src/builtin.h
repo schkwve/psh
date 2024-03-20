@@ -20,7 +20,7 @@ typedef int (*builtin_func)(process_t *);
  * @brief	This routine creates and fills a hashtable
  * 			with pointers to built-in command functions.
  */
-void builtin_init();
+void builtin_init(void);
 
 /**
  * @brief	This routine returns 1.

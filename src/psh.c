@@ -24,8 +24,11 @@ psh_info_t *shell;
 /**
  * @brief	Main entry point
  */
-int main()
+int main(int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
+
 	atexit(free_everything);
 
 	signal(SIGINT, SIG_IGN);
@@ -95,7 +98,7 @@ int main()
  * @brief	This routine free's all allocated memory
  * 			and destroys the hashtable.
  */
-void free_everything()
+void free_everything(void)
 {
 	hashtable_destroy(g_builtin_hashtable);
 	free(shell);

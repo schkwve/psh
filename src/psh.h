@@ -24,6 +24,6 @@ extern psh_info_t *shell;
  * @brief	This routine free's all allocated memory
  * 			and destroys the hashtable.
  */
-void free_everything();
+void free_everything(void);
 
 #endif // __PSH_H_

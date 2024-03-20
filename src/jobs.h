@@ -52,7 +52,7 @@ typedef struct {
  * 
  * @return	Job ID if a free one was found. Otherwise, -1.
  */
-int job_get_next_id();
+int job_get_next_id(void);
 
 /**
  * @brief	This routine prints the PID of the job.
@@ -109,7 +109,7 @@ int job_id_to_pid(int id);
 /**
  * @brief	This routine handles job status
  */
-void job_check_zombie();
+void job_check_zombie(void);
 
 /**
  * @brief	This routine waits until a job is done and sets appropriate status.
